@@ -66,6 +66,15 @@ function App() {
   const [currentDate, setCurrentDate] = useState('');
   const [timeOver, setTimeOver] = useState(false);
 
+  const reset = () =>{
+    setSelectedItems([])
+    setPhotos({})
+    setTimerStarted(false)
+    setSelectedProperty('')
+    setCurrentDate('')
+    setTimeOver(false)
+  }
+
   useEffect(() => {
     const today = new Date();
     const dateString = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
@@ -168,7 +177,7 @@ function App() {
       <Button variant="contained" color="primary" onClick={startChecklist}>
         清掃完了
       </Button>
-      :<Button variant="contained" color="primary">
+      :<Button variant="contained" color="primary" onClick={reset}>
           送信
         </Button>
         }
