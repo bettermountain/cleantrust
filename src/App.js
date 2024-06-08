@@ -115,9 +115,6 @@ function App() {
           ))}
         </Select>
       </FormControlStyled>
-      <Button variant="contained" color="primary" onClick={startChecklist}>
-        清掃完了
-      </Button>
       </>)}
       {timerStarted && (
         <CountdownBox>
@@ -167,9 +164,14 @@ function App() {
         onChange={(event) => handleTimeOverReasonChange(event)}
       />
       </>}
-      <Button variant="contained" color="primary">
+      {!timerStarted ?
+      <Button variant="contained" color="primary" onClick={startChecklist}>
+        清掃完了
+      </Button>
+      :<Button variant="contained" color="primary">
           送信
         </Button>
+        }
     </AppContainer>
   );
 }

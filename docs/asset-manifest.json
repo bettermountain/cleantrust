@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/shiftApp/static/css/main.964fdded.css",
+    "main.js": "/shiftApp/static/js/main.39dce61b.js",
+    "static/js/453.4717e935.chunk.js": "/shiftApp/static/js/453.4717e935.chunk.js",
+    "index.html": "/shiftApp/index.html",
+    "main.964fdded.css.map": "/shiftApp/static/css/main.964fdded.css.map",
+    "main.39dce61b.js.map": "/shiftApp/static/js/main.39dce61b.js.map",
+    "453.4717e935.chunk.js.map": "/shiftApp/static/js/453.4717e935.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.964fdded.css",
+    "static/js/main.39dce61b.js"
+  ]
+}
