@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/shiftApp/static/css/main.964fdded.css",
-    "main.js": "/shiftApp/static/js/main.39dce61b.js",
-    "static/js/453.4717e935.chunk.js": "/shiftApp/static/js/453.4717e935.chunk.js",
-    "index.html": "/shiftApp/index.html",
-    "main.964fdded.css.map": "/shiftApp/static/css/main.964fdded.css.map",
-    "main.39dce61b.js.map": "/shiftApp/static/js/main.39dce61b.js.map",
-    "453.4717e935.chunk.js.map": "/shiftApp/static/js/453.4717e935.chunk.js.map"
+    "main.css": "/cleanchecker/static/css/main.964fdded.css",
+    "main.js": "/cleanchecker/static/js/main.9e3f8b16.js",
+    "static/js/453.4717e935.chunk.js": "/cleanchecker/static/js/453.4717e935.chunk.js",
+    "index.html": "/cleanchecker/index.html",
+    "main.964fdded.css.map": "/cleanchecker/static/css/main.964fdded.css.map",
+    "main.9e3f8b16.js.map": "/cleanchecker/static/js/main.9e3f8b16.js.map",
+    "453.4717e935.chunk.js.map": "/cleanchecker/static/js/453.4717e935.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.964fdded.css",
-    "static/js/main.39dce61b.js"
+    "static/js/main.9e3f8b16.js"
   ]
 }
