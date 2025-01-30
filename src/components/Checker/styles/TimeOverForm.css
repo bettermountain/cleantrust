@@ -1,0 +1,38 @@
+.timeover-container {
+    width: 100%;
+    height: 80vh;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+.timeover-input-area{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+
+.timeover-input-space{
+  height: 30px;
+}
+  
+  .reset-button {
+    background-color: #dc3545;
+    color: white;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s;
+  }
+  
+  .reset-button:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+  }
+  

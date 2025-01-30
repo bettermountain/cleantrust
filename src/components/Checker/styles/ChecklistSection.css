@@ -1,0 +1,37 @@
+.checklist-section {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  height: 90vh; /* 画面全体の高さ */
+  padding: 16px;
+}
+
+.checklist-scrollable {
+  flex-grow: 1; /* 残りの高さ全部を使う */
+  overflow-y: auto; /* スクロール可能 */
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 8px;
+  margin-bottom: 16px;
+}
+
+.checklist-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.finish-button {
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.finish-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}

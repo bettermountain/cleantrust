@@ -1,0 +1,92 @@
+/* チェックリストのカードデザイン */
+.checklist-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  transition: box-shadow 0.3s ease, transform 0.2s;
+  padding: 12px;
+}
+
+.checklist-card:hover {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+}
+
+/* テキストとボタンの配置を調整 */
+.checklist-card-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; /* 長いテキストがある場合に対応 */
+  gap: 12px;
+  width: 100%;
+}
+
+/* テキストエリア */
+.checklist-text-area {
+  flex: 1;
+  min-width: 0; /* 伸縮可能にする */
+  max-width: 250px; /* 長すぎる場合に制限 */
+}
+
+.checklist-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  word-break: break-word; /* 長い単語で折り返し */
+  white-space: normal; /* 折り返しを許可 */
+}
+
+/* 写真アップロードボタン */
+.checklist-actions {
+  display: flex;
+  align-items: center;
+}
+
+.upload-button {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.upload-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* アップロードした画像 */
+.uploaded-image {
+  width: 100%;
+  height: auto;
+  margin-top: 12px;
+  border-radius: 8px;
+  object-fit: cover;
+  max-height: 200px;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 480px) {
+  .checklist-card {
+    max-width: 100%;
+  }
+
+  .checklist-text {
+    font-size: 14px;
+  }
+
+  .upload-button {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  .uploaded-image {
+    max-height: 180px;
+  }
+}
