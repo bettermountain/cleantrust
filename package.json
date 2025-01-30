@@ -1,6 +1,6 @@
 {
-  "homepage": "https://bettermountain.github.io/cleanchecker/",
-  "name": "cleanchecker",
+  "homepage": "https://bettermountain.github.io/cleantrust/",
+  "name": "cleantrust",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
