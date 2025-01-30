@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "cross-env PUBLIC_URL=/cleanchecker react-scripts build",
+    "build": "cross-env PUBLIC_URL=/cleantrust react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "rm": "rm -rf docs",

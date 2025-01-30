@@ -8,8 +8,7 @@ function App() {
     <>
       <CssBaseline />
       <Routes>
-        <Route path="/" element={<CheckerMain />} />
-        <Route path="/completion" element={<div>清掃完了画面</div>} />
+        <Route path="/cleantrust" element={<CheckerMain />} />
       </Routes>
     </>
   );

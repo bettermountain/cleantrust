@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/cleanchecker/static/css/main.df58646f.css",
-    "main.js": "/cleanchecker/static/js/main.56aed573.js",
-    "static/js/453.efd3c5e6.chunk.js": "/cleanchecker/static/js/453.efd3c5e6.chunk.js",
-    "index.html": "/cleanchecker/index.html",
-    "main.df58646f.css.map": "/cleanchecker/static/css/main.df58646f.css.map",
-    "main.56aed573.js.map": "/cleanchecker/static/js/main.56aed573.js.map",
-    "453.efd3c5e6.chunk.js.map": "/cleanchecker/static/js/453.efd3c5e6.chunk.js.map"
+    "main.css": "/cleantrust/static/css/main.df58646f.css",
+    "main.js": "/cleantrust/static/js/main.dd1999a5.js",
+    "static/js/453.efd3c5e6.chunk.js": "/cleantrust/static/js/453.efd3c5e6.chunk.js",
+    "index.html": "/cleantrust/index.html",
+    "main.df58646f.css.map": "/cleantrust/static/css/main.df58646f.css.map",
+    "main.dd1999a5.js.map": "/cleantrust/static/js/main.dd1999a5.js.map",
+    "453.efd3c5e6.chunk.js.map": "/cleantrust/static/js/453.efd3c5e6.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.df58646f.css",
-    "static/js/main.56aed573.js"
+    "static/js/main.dd1999a5.js"
   ]
 }
