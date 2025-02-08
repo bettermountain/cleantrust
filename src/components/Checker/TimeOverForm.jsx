@@ -16,7 +16,7 @@ const TimeOverForm = ({ onReset }) => {
         />
         <Box className="timeover-input-space"/>
         <Button className="reset-button" variant="contained" onClick={onReset}>
-          リセット
+          報告を送信する
         </Button>
       </Box>
     </div>

@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   height: 90vh; /* 画面全体の高さ */
-  padding: 16px;
+  padding: 8px 16px 16px 16px;
 }
 
 .checklist-scrollable {
@@ -13,7 +13,7 @@
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   padding: 8px;
-  margin-bottom: 16px;
+  margin-bottom:24px;
 }
 
 .checklist-container {
@@ -23,15 +23,17 @@
 }
 
 .finish-button {
+  position: fixed; /* 画面下部に固定 */
+  bottom: calc(16px + env(safe-area-inset-bottom)); /* Safariの検索バーを考慮 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px); /* 画面幅に適応 */
+  max-width: 400px;
   background-color: #007bff;
   color: white;
   font-size: 16px;
   padding: 12px;
   border-radius: 8px;
   transition: background-color 0.3s ease, transform 0.2s;
-}
-
-.finish-button:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
+  text-align: center;
 }
