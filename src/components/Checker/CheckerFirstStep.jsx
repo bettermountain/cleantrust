@@ -49,7 +49,7 @@ const CheckerFirstStep = ({
   useEffect(() => {
     const fetchPlaces = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/public/places?user_id=${user_id}`);
+        const res = await fetch(`http://49.212.148.194:8000/api/public/places?user_id=${user_id}`);
         const data = await res.json();
         setPlaces(data);
       } catch (err) {
