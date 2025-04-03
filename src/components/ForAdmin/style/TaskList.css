@@ -1,0 +1,68 @@
+/* TaskList.css */
+
+/* TaskList全体を縦方向にレイアウト */
+.task-list-container {
+    /* Headerなどで64px×3行分ある(=192px)想定で、残りを使用 */
+    height: calc(100vh - 192px);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    /* 横幅は任意に調整。ここではmarginを自動にして中央寄せ */
+    margin: 0 auto;
+    min-width: calc(100vw - 350px); /* 必要に応じて変更してください */
+  }
+  
+  /* Paperをフレックスレイアウトに */
+  .task-list-paper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1rem; /* 細部はお好みで */
+  }
+  
+  /* ヘッダー部分(タイトルやセレクトボックス等) */
+  .task-list-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem; 
+  }
+  
+  /* タイトル行(登録数を右上などに配置したい場合の例) */
+  .task-list-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* リスト部分のみ縦スクロールにする */
+  .task-list-scroll {
+    flex: 1;
+    overflow-y: auto;
+    max-height: calc(100vh - 450px);
+    /* リストに余白が欲しい場合はpaddingなど追加 */
+  }
+  
+  .task-list-scroll-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 450px);
+    border: 1px solid #ddd;
+    overflow: hidden; /* 中身だけスクロールさせる */
+    border-radius: 4px;
+  }
+  
+  /* スクロール対象の中身 */
+  .task-list-scroll-content {
+    overflow-y: auto;
+    flex: 1;
+  }
+  
+  /* stickyヘッダー */
+  .task-list-table-header {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    border-bottom: 1px solid #ccc;
+  }
+  

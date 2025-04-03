@@ -1,23 +1,24 @@
+// src/components/Checker/CountdownTimer.jsx
 import React from "react";
 import Countdown from "react-countdown";
 import { Typography } from "@mui/material";
-import "./styles/CountdownTimer.css"; // スタイルを適用
+import "./styles/CountdownTimer.css";
 
-const CountdownTimer = ({ onComplete }) => {
+const CountdownTimer = ({ totalLimitTime, onComplete }) => {
   const renderer = ({ minutes, seconds, completed }) => {
     if (completed) {
       onComplete();
       return <Typography className="countdown-expired" variant="h6">タイムオーバー</Typography>;
     }
 
-    // 2桁表示にするために `padStart(2, '0')` を適用
-    const formattedMinutes = String(minutes).padStart(2, '0');
-    const formattedSeconds = String(seconds).padStart(2, '0');
-
-    return <div className="countdown-box">{formattedMinutes}:{formattedSeconds}</div>;
+    return (
+      <div className="countdown-box">
+        {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
+      </div>
+    );
   };
 
-  return <Countdown date={Date.now() + 500000} renderer={renderer} />;
+  return <Countdown date={Date.now() + totalLimitTime} renderer={renderer} />;
 };
 
 export default CountdownTimer;

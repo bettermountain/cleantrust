@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import { Typography, Button, TextField, Box } from "@mui/material";
 import "./styles/SendPage.css";
+import { updateReportRemarks } from "../../api"; // 🔹 追記
 
-const SendPage = ({ onSubmit }) => {
+const SendPage = ({ reportId, onSubmit }) => {
   const [remarks, setRemarks] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = () => {
-    setSubmitted(true);
-    console.log("報告を送信しました");
+  const handleSubmit = async () => {
+    try {
+      await updateReportRemarks(reportId, remarks);
+      setSubmitted(true);
+      console.log("備考を送信しました");
+      onSubmit(); // ✅ 送信後にリセットなど
+    } catch (err) {
+      console.error("備考送信失敗", err);
+    }
   };
 
   return (
