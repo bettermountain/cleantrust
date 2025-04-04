@@ -24,7 +24,11 @@ const ChecklistSection = ({ selectedItems, photos, onPhotoUpload, onFinish, onTi
         </div>
       </Box>
 
-      <Button className="finish-button" variant="contained" onClick={onFinish}>
+      <Button
+        className="finish-button"
+        variant="contained"
+        onClick={() => onFinish("")} // remarks を空文字で明示的に渡す
+      >
         清掃完了
       </Button>
     </div>
