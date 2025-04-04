@@ -6,7 +6,7 @@ import CheckerFirstStep from "./CheckerFirstStep";
 import ChecklistSection from "./ChecklistSection";
 import TimeOverForm from "./TimeOverForm";
 import SendPage from "./SendPage";
-import { startReport, completeReport } from "../../api"; // ← API追加
+import { startReport, completeReport, fetchPublicTasks } from "../../api"; // ← API追加
 import "./styles/CheckerMain.css";
 
 const CheckerMain = () => {
@@ -31,8 +31,7 @@ const CheckerMain = () => {
       setReportId(res.data.report_id);
 
       // 🔹 タスク取得（例：5件）
-      const taskRes = await fetch(`/api/public/tasks?user_id=${user_id}&place_id=${selectedPlace}`);
-      const taskData = await taskRes.json();
+      const taskData = await fetchPublicTasks(user_id, selectedPlace);
 
       setSelectedItems(taskData); // tasks
       const totalLimit = taskData.reduce((sum, item) => sum + (item.limit_time || 0), 0);

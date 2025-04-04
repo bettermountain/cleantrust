@@ -105,3 +105,22 @@ export const fetchReportDetail = (reportId) =>
 
   export const updateReportRemarks = (reportId, remarks) =>
   API.patch(`/reports/remarks`, { report_id: reportId, remarks });
+
+// 🔓 認証不要の公開タスク取得（Checker用）
+export const fetchPublicTasks = async (user_id, place_id) => {
+  const res = await API.get(`/api/public/tasks`, {
+    params: {
+      user_id,
+      place_id,
+    },
+  });
+  return res.data;
+};
+
+// 🔓 認証不要の公開プレース一覧（Checker用）
+export const fetchPublicPlaces = async (user_id) => {
+  const res = await API.get("/api/public/places", {
+    params: { user_id },
+  });
+  return res.data;
+};

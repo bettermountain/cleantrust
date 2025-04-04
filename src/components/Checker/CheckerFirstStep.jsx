@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { fetchPublicStaffs } from "../../api";
+import { fetchPublicPlaces } from "../../api";
 import "./styles/CheckerFirstStep.css";
 
 const CheckerFirstStep = ({
@@ -47,16 +48,16 @@ const CheckerFirstStep = ({
   }, []);
 
   useEffect(() => {
-    const fetchPlaces = async () => {
+    const loadPlaces = async () => {
       try {
-        const res = await fetch(`https://cleantrust.jp/api/public/places?user_id=${user_id}`);
-        const data = await res.json();
-        setPlaces(data);
+        const places = await fetchPublicPlaces(user_id);
+        setPlaces(places);
       } catch (err) {
         console.error("物件取得失敗", err);
       }
     };
-    fetchPlaces();
+
+    loadPlaces();
   }, [user_id]);
 
   const handleStartClick = () => {
