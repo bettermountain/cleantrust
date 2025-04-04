@@ -2,7 +2,7 @@
   "homepage": "https://bettermountain.github.io/cleantrust/",
   "name": "cleantrust",
   "version": "0.1.0",
-  "proxy": "https://49.212.148.194:8000",
+  "proxy": "https://cleantrust.jp",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.4",
