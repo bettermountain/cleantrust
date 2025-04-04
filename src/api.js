@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://49.212.148.194:8000", // FastAPIの起動URL　さくら
+  baseURL: "https://49.212.148.194:8000", // FastAPIの起動URL　さくら
 });
 
 // ✅ JWTトークンを自動付与（リクエスト前に付ける）
