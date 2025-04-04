@@ -47,13 +47,14 @@ const CheckerMain = () => {
 // ✅ 完了処理（remarks を引数で受け取るよう変更）
 const handleFinish = async (remarks = "") => {
   try {
-    // チェック項目 + 写真URL を含む配列
-    const items = selectedItems.map((item, index) => ({
-      itemid: item.id,
-      photourl: photos[index] || "",
-    }));
+    const items = selectedItems.map((item, index) => {
+      const photo = photos[index];
+      return {
+        itemid: item.id,
+        photourl: typeof photo === "string" ? photo : "",
+      };
+    });
 
-    // 実際に送信された写真の数をカウント
     const reportedCount = items.filter(item => item.photourl).length;
 
     await completeReport(reportId, {
@@ -61,7 +62,7 @@ const handleFinish = async (remarks = "") => {
       remarks,
       timelimit: Math.round(limitTime / 60000),
       items,
-      reportedcount: reportedCount, // ここで送信数も登録
+      reportedcount: reportedCount,
     });
 
     setTimerStarted(false);
@@ -70,6 +71,7 @@ const handleFinish = async (remarks = "") => {
     console.error("報告送信失敗", err);
   }
 };
+
 
   const reset = () => {
     setSelectedItems([]);
