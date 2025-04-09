@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, Typography, Button, Box } from "@mui/material";
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto：';
 import "./styles/ChecklistItem.css"; // CSSを適用
 
 const ChecklistItem = ({ item, index, photo, onPhotoUpload }) => (
@@ -29,7 +29,14 @@ const ChecklistItem = ({ item, index, photo, onPhotoUpload }) => (
     </CardContent>
 
     {/* アップロードした画像を表示 */}
-    {photo && <img className="uploaded-image" src={photo} alt={`清掃項目 ${index + 1}`} />}
+    {photo && (
+      <img
+        className="uploaded-image"
+        src={photo}
+        alt={`清掃項目 ${index + 1}`}
+        style={{ maxWidth: 200, marginTop: 10 }}
+      />
+    )}
   </Card>
 );
 

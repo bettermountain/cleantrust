@@ -5,6 +5,14 @@ import { Typography } from "@mui/material";
 import "./styles/CountdownTimer.css";
 
 const CountdownTimer = ({ totalLimitTime, onComplete }) => {
+  if (!totalLimitTime || totalLimitTime <= 0) {
+    return (
+      <Typography className="countdown-waiting" variant="body1">
+        タイマーを準備中...
+      </Typography>
+    );
+  }
+
   const renderer = ({ minutes, seconds, completed }) => {
     if (completed) {
       onComplete();

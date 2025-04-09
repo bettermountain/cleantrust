@@ -103,8 +103,8 @@ export const fetchReports = () => API.get("/reports");
 export const fetchReportDetail = (reportId) =>
   API.get(`/reports/${reportId}`);
 
-  export const updateReportRemarks = (reportId, remarks) =>
-  API.patch(`/reports/remarks`, { report_id: reportId, remarks });
+export const updateReportRemarks = (reportId, remarks) =>
+API.patch(`/reports/remarks`, { report_id: reportId, remarks });
 
 // 🔓 認証不要の公開タスク取得（Checker用）
 export const fetchPublicTasks = async (user_id, place_id) => {

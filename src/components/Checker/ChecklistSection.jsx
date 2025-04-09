@@ -8,8 +8,10 @@ import "./styles/ChecklistSection.css";
 const ChecklistSection = ({ selectedItems, photos, onPhotoUpload, onFinish, onTimeOver, totalLimitTime }) => {
   return (
     <div className="checklist-section">
+      {/* タイマー */}
       <CountdownTimer totalLimitTime={totalLimitTime} onComplete={onTimeOver} />
 
+      {/* チェックリスト本体 */}
       <Box className="checklist-scrollable">
         <div className="checklist-container">
           {selectedItems.map((item, index) => (
@@ -24,6 +26,7 @@ const ChecklistSection = ({ selectedItems, photos, onPhotoUpload, onFinish, onTi
         </div>
       </Box>
 
+      {/* 完了ボタン */}
       <Button
         className="finish-button"
         variant="contained"

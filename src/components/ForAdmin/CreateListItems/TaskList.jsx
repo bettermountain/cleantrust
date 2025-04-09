@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { Paper, Typography, Box, List } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  Box,
+  List,
+  CircularProgress,
+} from "@mui/material";
 
 // 📝 並び替え機能は今後再利用するため、コメントアウトで残しています。
 // import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
@@ -7,6 +13,7 @@ import { Paper, Typography, Box, List } from "@mui/material";
 import TaskForm from "./TaskForm";
 import TaskItem from "./TaskItem";
 import SelectBox from "./SelectBox";
+import Notification from "../../cmn/Notification"; // ✅ 通知追加
 import "../style/TaskList.css";
 import {
   fetchTasks,
@@ -23,22 +30,31 @@ import {
 //   result.splice(endIndex, 0, removed);
 //   return result;
 // }
-// src/components/CreateListItems/TaskList.jsx
-// ...省略（importやコメントアウト部はそのまま）...
 
 const TaskList = ({ placeId, placeName }) => {
   const [tasks, setTasks] = useState([]);
   const [question, setQuestion] = useState(5);
+  const [loading, setLoading] = useState(false);
+
+  const [editingIndex, setEditingIndex] = useState(null);
+
+  // ✅ 通知メッセージ
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const reportItemCounts = Array.from({ length: 10 }, (_, i) => `${i + 1}問`);
 
   const loadTasks = async () => {
     if (!placeId) return;
+    setLoading(true);
     try {
       const res = await fetchTasks(placeId);
       setTasks(res.data);
     } catch (err) {
       console.error("タスク取得失敗", err);
+      setErrorMsg("タスクの取得に失敗しました。");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,17 +63,21 @@ const TaskList = ({ placeId, placeName }) => {
   }, [placeId]);
 
   const handleAddTask = async (newTask) => {
+    setLoading(true);
     try {
       await addTask(placeId, newTask.text, 0, newTask.limit_time); // ← number=0
       await loadTasks();
+      setSuccessMsg("タスクを追加しました。");
     } catch (err) {
       console.error("タスク追加失敗", err);
+      setErrorMsg("タスクの追加に失敗しました。");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const [editingIndex, setEditingIndex] = useState(null);
-
   const handleEditTask = async (index, text, limit_time) => {
+    setLoading(true);
     try {
       const updated = [...tasks];
       const task = updated[index];
@@ -65,21 +85,32 @@ const TaskList = ({ placeId, placeName }) => {
       task.limit_time = limit_time;
       setTasks(updated);
       await updateTask(task.id, text, limit_time); // ← 必要に応じてAPI呼び出し
+      setSuccessMsg("タスクを更新しました。");
     } catch (err) {
       console.error("タスク更新失敗", err);
+      setErrorMsg("タスクの更新に失敗しました。");
+    } finally {
+      setLoading(false);
     }
   };
-  
 
-const handleDeleteTask = async (index) => {
-  const confirmed = window.confirm("この項目を削除しますか？");
-  if (!confirmed) return;
-
-  const target = tasks[index];
-  await deleteTask(target.id);
-  const updated = tasks.filter((_, i) => i !== index);
-  setTasks(updated);
-};
+  const handleDeleteTask = async (index) => {
+    const confirmed = window.confirm("この項目を削除しますか？");
+    if (!confirmed) return;
+    setLoading(true);
+    try {
+      const target = tasks[index];
+      await deleteTask(target.id);
+      const updated = tasks.filter((_, i) => i !== index);
+      setTasks(updated);
+      setSuccessMsg("タスクを削除しました。");
+    } catch (err) {
+      console.error("タスク削除失敗", err);
+      setErrorMsg("タスクの削除に失敗しました。");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="task-list-container">
@@ -129,22 +160,32 @@ const handleDeleteTask = async (index) => {
 
           {/* リスト部分（スクロール対象） */}
           <Box className="task-list-scroll-content">
-            <List sx={{ minHeight: 80 }}>
-              {tasks.map((task, index) => (
-                <div key={task.id} style={{ marginBottom: 8 }}>
-                  <TaskItem
-                    task={task}
-                    index={index}
-                    onEdit={handleEditTask}
-                    onDelete={handleDeleteTask}
-                    editingIndex={editingIndex}
-                    setEditingIndex={setEditingIndex}
-                  />
-                </div>
-              ))}
-            </List>
+            {loading ? (
+              <Box display="flex" justifyContent="center" py={4}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <List sx={{ minHeight: 80 }}>
+                {tasks.map((task, index) => (
+                  <div key={task.id} style={{ marginBottom: 8 }}>
+                    <TaskItem
+                      task={task}
+                      index={index}
+                      onEdit={handleEditTask}
+                      onDelete={handleDeleteTask}
+                      editingIndex={editingIndex}
+                      setEditingIndex={setEditingIndex}
+                    />
+                  </div>
+                ))}
+              </List>
+            )}
           </Box>
         </Paper>
+
+        {/* 通知 */}
+        <Notification open={!!successMsg} message={successMsg} type="success" onClose={() => setSuccessMsg("")} />
+        <Notification open={!!errorMsg} message={errorMsg} type="error" onClose={() => setErrorMsg("")} />
       </Paper>
     </div>
   );

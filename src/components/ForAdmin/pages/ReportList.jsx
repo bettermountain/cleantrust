@@ -10,26 +10,38 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
+  CircularProgress,
+  IconButton,
+  Alert,
 } from "@mui/material";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import { useNavigate } from "react-router-dom";
 import { fetchReports } from "../../../api";
 
 const ReportList = () => {
   const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
   const navigate = useNavigate();
 
+  const loadReports = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetchReports();
+      setReports(res.data);
+    } catch (err) {
+      console.error("レポート取得失敗", err);
+      setError("レポートの取得に失敗しました。しばらくしてから再度お試しください。");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetchReports();
-        setReports(res.data);
-      } catch (err) {
-        console.error("レポート取得失敗", err);
-      }
-    };
-    load();
+    loadReports();
   }, []);
 
   const handleRowClick = (reportId) => {
@@ -58,7 +70,18 @@ const ReportList = () => {
 
   return (
     <Paper sx={{ padding: 3 }}>
-      <Typography variant="h5" gutterBottom>清掃報告一覧</Typography>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Typography variant="h5" gutterBottom>清掃報告一覧</Typography>
+        <IconButton onClick={loadReports}>
+          <RefreshIcon />
+        </IconButton>
+      </Box>
+
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
 
       <TableContainer component={Box}>
         <Table>
@@ -72,22 +95,30 @@ const ReportList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {reports
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((report) => (
-                <TableRow
-                  key={report.id}
-                  hover
-                  sx={{ cursor: "pointer" }}
-                  onClick={() => handleRowClick(report.id)}
-                >
-                  <TableCell>{new Date(report.date).toLocaleString()}</TableCell>
-                  <TableCell>{report.placename || report.placeid}</TableCell>
-                  <TableCell>{getDisplayStatus(report)}</TableCell>
-                  <TableCell>{getRemarksStatus(report.remarks)}</TableCell>
-                  <TableCell>{report.staffname || report.staffid}</TableCell>
-                </TableRow>
-              ))}
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={5} align="center">
+                  <CircularProgress size={24} />
+                </TableCell>
+              </TableRow>
+            ) : (
+              reports
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((report) => (
+                  <TableRow
+                    key={report.id}
+                    hover
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => handleRowClick(report.id)}
+                  >
+                    <TableCell>{new Date(report.date).toLocaleString()}</TableCell>
+                    <TableCell>{report.placename || report.placeid}</TableCell>
+                    <TableCell>{getDisplayStatus(report)}</TableCell>
+                    <TableCell>{getRemarksStatus(report.remarks)}</TableCell>
+                    <TableCell>{report.staffname || report.staffid}</TableCell>
+                  </TableRow>
+                ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>

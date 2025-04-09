@@ -1,3 +1,4 @@
+// src/components/Checker/CheckerFirstStep.jsx
 import React, { useState, useEffect } from "react";
 import {
   Button,
@@ -11,10 +12,10 @@ import {
   DialogContent,
   DialogActions,
   InputLabel,
+  CircularProgress,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { fetchPublicStaffs } from "../../api";
-import { fetchPublicPlaces } from "../../api";
+import { fetchPublicStaffs, fetchPublicPlaces } from "../../api";
 import "./styles/CheckerFirstStep.css";
 
 const CheckerFirstStep = ({
@@ -24,23 +25,12 @@ const CheckerFirstStep = ({
   setSelectedStaff,
   startChecklist,
 }) => {
+  const { user_id } = useParams();
   const [currentDate, setCurrentDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [places, setPlaces] = useState([]);
   const [staffs, setStaffs] = useState([]);
-  const { user_id } = useParams();
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetchPublicStaffs(user_id);
-        setStaffs(res.data);
-      } catch (err) {
-        console.error("スタッフ取得失敗", err);
-      }
-    };
-    load();
-  }, [user_id]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const today = new Date();
@@ -48,22 +38,23 @@ const CheckerFirstStep = ({
   }, []);
 
   useEffect(() => {
-    const loadPlaces = async () => {
+    const loadData = async () => {
       try {
-        const places = await fetchPublicPlaces(user_id);
-        setPlaces(places);
+        const staffRes = await fetchPublicStaffs(user_id);
+        const placeRes = await fetchPublicPlaces(user_id);
+        setStaffs(staffRes.data);
+        setPlaces(placeRes);
       } catch (err) {
-        console.error("物件取得失敗", err);
+        console.error("データ取得失敗", err);
+      } finally {
+        setLoading(false);
       }
     };
-
-    loadPlaces();
+    loadData();
   }, [user_id]);
 
   const handleStartClick = () => {
-    if (selectedPlace && selectedStaff) {
-      setOpenModal(true);
-    }
+    if (selectedPlace && selectedStaff) setOpenModal(true);
   };
 
   const handleConfirmStart = () => {
@@ -76,51 +67,58 @@ const CheckerFirstStep = ({
       <Box className="checker-input-box">
         <Typography className="date-text">日付: {currentDate}</Typography>
 
-        <FormControl fullWidth sx={{ mt: 2 }}>
-          <InputLabel>物件を選択</InputLabel>
-          <Select
-            value={selectedPlace}
-            onChange={(e) => setSelectedPlace(e.target.value)}
-            label="物件を選択"
-            className="select-box"
-          >
-            {places.map((place) => (
-              <MenuItem key={place.id} value={place.id}>
-                {place.placename}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        {loading ? (
+          <Box display="flex" justifyContent="center" mt={4}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <>
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <InputLabel>物件を選択</InputLabel>
+              <Select
+                value={selectedPlace}
+                onChange={(e) => setSelectedPlace(e.target.value)}
+                label="物件を選択"
+                className="select-box"
+              >
+                {places.map((place) => (
+                  <MenuItem key={place.id} value={place.id}>
+                    {place.placename}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-        <FormControl fullWidth sx={{ mt: 2 }}>
-          <InputLabel>スタッフを選択</InputLabel>
-          <Select
-            value={selectedStaff}
-            onChange={(e) => setSelectedStaff(e.target.value)}
-            label="スタッフを選択"
-            className="select-box"
-          >
-            {staffs.map((staff) => (
-              <MenuItem key={staff.id} value={staff.id}>
-                {staff.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <InputLabel>スタッフを選択</InputLabel>
+              <Select
+                value={selectedStaff}
+                onChange={(e) => setSelectedStaff(e.target.value)}
+                label="スタッフを選択"
+                className="select-box"
+              >
+                {staffs.map((staff) => (
+                  <MenuItem key={staff.id} value={staff.id}>
+                    {staff.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-        <div className="checker-space-underselect" />
+            <div className="checker-space-underselect" />
 
-        <Button
-          variant="contained"
-          onClick={handleStartClick}
-          className="start-button"
-          disabled={!selectedPlace || !selectedStaff}
-        >
-          清掃報告を開始する
-        </Button>
+            <Button
+              variant="contained"
+              onClick={handleStartClick}
+              className="start-button"
+              disabled={!selectedPlace || !selectedStaff}
+            >
+              清掃報告を開始する
+            </Button>
+          </>
+        )}
       </Box>
 
-      {/* 確認モーダル */}
       <Dialog open={openModal} onClose={() => setOpenModal(false)}>
         <DialogTitle>確認</DialogTitle>
         <DialogContent>
