@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, Typography, Button, Box } from "@mui/material";
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto：';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import "./styles/ChecklistItem.css"; // CSSを適用
 
 const ChecklistItem = ({ item, index, photo, onPhotoUpload }) => (
