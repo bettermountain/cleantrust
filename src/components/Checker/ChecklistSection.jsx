@@ -20,7 +20,7 @@ const ChecklistSection = ({ selectedItems, photos, onPhotoUpload, onFinish, onTi
               item={item.itemtext}
               index={index}
               photo={photos[index]}
-              onPhotoUpload={(e) => onPhotoUpload(index, e)}
+              onPhotoUpload={onPhotoUpload}  // ← そのまま渡す！中で index 渡すから！ 👈
             />
           ))}
         </div>

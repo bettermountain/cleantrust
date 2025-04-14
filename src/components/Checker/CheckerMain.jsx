@@ -99,20 +99,58 @@ const CheckerMain = () => {
     return await getDownloadURL(fileRef);
   };
 
-  const handlePhotoUpload = async (index, event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+  const resizeImage = (file, maxSize = 1000) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const canvas = document.createElement("canvas");
+      const reader = new FileReader();
+  
+      reader.onload = (e) => {
+        img.src = e.target.result;
+      };
+  
+      img.onload = () => {
+        const scale = Math.min(maxSize / img.width, maxSize / img.height);
+        const width = img.width * scale;
+        const height = img.height * scale;
+  
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+  
+        canvas.toBlob(
+          (blob) => {
+            resolve(new File([blob], file.name, { type: "image/jpeg" }));
+          },
+          "image/jpeg",
+          0.7 // ← 圧縮率（0.0〜1.0）
+        );
+      };
+  
+      img.onerror = reject;
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+  
+  const handlePhotoUpload = async (index, event) => {  
+    const file = event?.target?.files?.[0]; // nullチェック含む
+    if (!file) {
+      console.warn("⚠️ ファイルが存在しません");
+      return;
+    }
   
     try {
-      const url = await uploadPhoto(reportId, index, file);
+      const compressedFile = await resizeImage(file); // ← 追加
+      const url = await uploadPhoto(reportId, index, compressedFile); // ← 圧縮後に送信
       setPhotos(prev => ({ ...prev, [index]: url }));
       showSnackbar(`写真 ${index + 1} をアップロードしました`);
     } catch (err) {
-      console.error("アップロード失敗", err);
+      console.error("❌ アップロード失敗", err);
       showSnackbar(`写真 ${index + 1} のアップロードに失敗しました`, "error");
     }
   };
-  
 
   return (
     <div className="checker-container">

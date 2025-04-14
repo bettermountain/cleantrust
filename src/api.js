@@ -131,7 +131,7 @@ export const uploadPhoto = async (reportId, index, file) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await axios.post(`/api/reports/upload-photo?report_id=${reportId}&index=${index}`, formData, {
+  const res = await API.post(`/reports/upload-photo?report_id=${reportId}&index=${index}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

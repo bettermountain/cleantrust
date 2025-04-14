@@ -93,7 +93,7 @@ const ReportDetail = () => {
                       secondary={
                         <>
                           <Typography variant="body2" color="textSecondary">
-                            項目ID: {item.itemid}
+                            項目: {item.itemtext}
                           </Typography>
                           {item.photourl ? (
                             <img

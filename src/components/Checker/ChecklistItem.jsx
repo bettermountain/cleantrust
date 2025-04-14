@@ -58,13 +58,13 @@ const ChecklistItem = ({ item, index, photo, onPhotoUpload }) => {
 
         {/* 🔹 写真アップロードボタン */}
         <Box className="checklist-actions">
-          <input
-            accept="image/*"
-            id={`upload-photo-${index}`}
-            type="file"
-            onChange={handleChange}
-            style={{ display: "none" }}
-          />
+        <input
+          accept="image/*"
+          id={`upload-photo-${index}`}
+          type="file"
+          onChange={handleChange}
+          style={{ display: "none" }}
+        />
           <label htmlFor={`upload-photo-${index}`}>
             <Tooltip
               title={
