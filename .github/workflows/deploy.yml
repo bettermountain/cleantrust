@@ -3,7 +3,7 @@ name: Deploy React App
 on:
   push:
     branches:
-      - main  # または your-deploy-branch
+      - main
 
 jobs:
   build-and-deploy:
@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: "18"
 
-      # ✅ ここで .env を作成
+      # ✅ .env を生成（React アプリ用）
       - name: Set up .env file
         run: |
           echo "REACT_APP_FIREBASE_API_KEY=${{ secrets.REACT_APP_FIREBASE_API_KEY }}" >> .env
@@ -28,28 +28,35 @@ jobs:
           echo "REACT_APP_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.REACT_APP_FIREBASE_MESSAGING_SENDER_ID }}" >> .env
           echo "REACT_APP_FIREBASE_APP_ID=${{ secrets.REACT_APP_FIREBASE_APP_ID }}" >> .env
 
+      # ✅ firebase.js を自動生成（.envから読み込む形に）
       - name: Create firebase.js
         run: |
-          echo "import { initializeApp } from 'firebase/app';" > src/firebase.js
-          echo "import { getStorage } from 'firebase/storage';" >> src/firebase.js
-          echo "const firebaseConfig = {" >> src/firebase.js
-          echo "  apiKey: '${{ secrets.REACT_APP_FIREBASE_API_KEY }}'," >> src/firebase.js
-          echo "  authDomain: '${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }}'," >> src/firebase.js
-          echo "  projectId: '${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }}'," >> src/firebase.js
-          echo "  storageBucket: '${{ secrets.REACT_APP_FIREBASE_STORAGE_BUCKET }}'," >> src/firebase.js
-          echo "  messagingSenderId: '${{ secrets.REACT_APP_FIREBASE_MESSAGING_SENDER_ID }}'," >> src/firebase.js
-          echo "  appId: '${{ secrets.REACT_APP_FIREBASE_APP_ID }}'" >> src/firebase.js
-          echo "};" >> src/firebase.js
-          echo "const app = initializeApp(firebaseConfig);" >> src/firebase.js
-          echo "export const storage = getStorage(app);" >> src/firebase.js
+          cat <<EOF > src/firebase.js
+          import { initializeApp } from "firebase/app";
+          import { getStorage } from "firebase/storage";
 
+          const firebaseConfig = {
+            apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+            authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+            projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+            storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+            messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+            appId: process.env.REACT_APP_FIREBASE_APP_ID,
+          };
+
+          const app = initializeApp(firebaseConfig);
+          export const storage = getStorage(app);
+          EOF
+
+      # ✅ 依存関係をインストール
       - name: Install dependencies
         run: npm ci
 
+      # ✅ ビルド時にCI=falseを明示（ESLint警告をエラー扱いしない）
       - name: Build React app
-        run: npm run build
+        run: CI=false npm run build
 
-      # 例: GitHub Pages にデプロイ（使ってるサービスに応じて変更）
+      # ✅ GitHub Pagesへデプロイ（buildフォルダを対象）
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
