@@ -1,4 +1,4 @@
-name: Deploy React App
+name: Deploy React App to GitHub Pages
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: "18"
 
-      # ✅ .env を生成（React アプリ用）
+      # ✅ .env 作成
       - name: Set up .env file
         run: |
           echo "REACT_APP_FIREBASE_API_KEY=${{ secrets.REACT_APP_FIREBASE_API_KEY }}" >> .env
@@ -28,9 +28,10 @@ jobs:
           echo "REACT_APP_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.REACT_APP_FIREBASE_MESSAGING_SENDER_ID }}" >> .env
           echo "REACT_APP_FIREBASE_APP_ID=${{ secrets.REACT_APP_FIREBASE_APP_ID }}" >> .env
 
-      # ✅ firebase.js を自動生成（.envから読み込む形に）
+      # ✅ firebase.js の自動生成
       - name: Create firebase.js
         run: |
+          mkdir -p src
           cat <<EOF > src/firebase.js
           import { initializeApp } from "firebase/app";
           import { getStorage } from "firebase/storage";
@@ -48,17 +49,21 @@ jobs:
           export const storage = getStorage(app);
           EOF
 
-      # ✅ 依存関係をインストール
       - name: Install dependencies
         run: npm ci
 
-      # ✅ ビルド時にCI=falseを明示（ESLint警告をエラー扱いしない）
-      - name: Build React app
-        run: CI=false npm run build
+      # ✅ build 実行（docs ディレクトリに移動）
+      - name: Build the React App
+        run: |
+          npm run build
+          mkdir -p docs
+          cp -r build/* docs/
+          cp docs/index.html docs/404.html
 
-      # ✅ GitHub Pagesへデプロイ（buildフォルダを対象）
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+      - name: Commit and Push to main/docs
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add docs
+          git commit -m "Deploy to docs" || echo "No changes to commit"
+          git push origin main
