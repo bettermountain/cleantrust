@@ -21,7 +21,7 @@ const CheckerMain = () => {
   const [timerStarted, setTimerStarted] = useState(false);
   const [timeOver, setTimeOver] = useState(false);
   const [showSendPage, setShowSendPage] = useState(false);
-  const [limitTime, setLimitTime] = useState(180000);
+  const [limitTime, setLimitTime] = useState(0);
   const [reportId, setReportId] = useState("");
 
   // ローディング＆通知
