@@ -124,3 +124,18 @@ export const fetchPublicPlaces = async (user_id) => {
   });
   return res.data;
 };
+
+
+// 🔹 圧縮付きの画像アップロード
+export const uploadPhoto = async (reportId, index, file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await axios.post(`/api/reports/upload-photo?report_id=${reportId}&index=${index}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return res.data.url;
+};

@@ -9,12 +9,16 @@ import {
   Divider,
   CircularProgress,
   Alert,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { ArrowBack } from "@mui/icons-material";
+import { useParams, useNavigate } from "react-router-dom";
 import { fetchReportDetail } from "../../../api";
 
 const ReportDetail = () => {
   const { reportId } = useParams();
+  const navigate = useNavigate();
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -38,8 +42,19 @@ const ReportDetail = () => {
 
   return (
     <Paper sx={{ padding: 3 }}>
-      <Typography variant="h5" gutterBottom>清掃報告詳細</Typography>
+      {/* タイトル行（戻るボタン＋タイトル） */}
+      <Box display="flex" alignItems="center" mb={2}>
+        <Tooltip title="一覧に戻る" placement="top" arrow>
+          <IconButton onClick={() => navigate("/cleantrust/admin/reportlist")} sx={{ mr: 1 }}>
+            <ArrowBack />
+          </IconButton>
+        </Tooltip>
+        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+          清掃報告詳細
+        </Typography>
+      </Box>
 
+      {/* ローディング・エラー・データ表示 */}
       {loading ? (
         <Box display="flex" justifyContent="center" mt={4}>
           <CircularProgress />
@@ -48,31 +63,53 @@ const ReportDetail = () => {
         <Alert severity="error">{error}</Alert>
       ) : (
         <>
-          <Typography variant="subtitle1">日付: {new Date(report.date).toLocaleString()}</Typography>
-          <Typography variant="subtitle1">物件: {report.placename || report.placeid}</Typography>
-          <Typography variant="subtitle1">担当者: {report.staffname || report.staffid}</Typography>
-          <Typography variant="subtitle1">ステータス: {report.status}</Typography>
-          <Typography variant="subtitle1">備考: {report.remarks || "（なし）"}</Typography>
+          <Typography variant="body2" sx={{ mb: 0.5 }}>
+            日付: {new Date(report.date).toLocaleString()}
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 0.5 }}>
+            物件: {report.placename || report.placeid}
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 0.5 }}>
+            担当者: {report.staffname || report.staffid}
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 0.5 }}>
+            ステータス: {report.status}
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 2 }}>
+            備考: {report.remarks || "（なし）"}
+          </Typography>
 
-          <Box mt={3}>
-            <Typography variant="h6">チェック項目一覧</Typography>
+          <Box mt={2}>
+            <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
+              チェック項目一覧
+            </Typography>
             <List>
               {report.items && report.items.map((item, index) => (
                 <Box key={index}>
                   <ListItem alignItems="flex-start">
                     <ListItemText
                       primary={`項目 ${index + 1}`}
+                      primaryTypographyProps={{ fontSize: 14, fontWeight: 500 }}
                       secondary={
                         <>
-                          <div>項目ID: {item.itemid}</div>
+                          <Typography variant="body2" color="textSecondary">
+                            項目ID: {item.itemid}
+                          </Typography>
                           {item.photourl ? (
                             <img
                               src={item.photourl}
                               alt={`清掃写真-${index + 1}`}
-                              style={{ marginTop: 8, maxWidth: 200, borderRadius: 4 }}
+                              style={{
+                                marginTop: 8,
+                                maxWidth: 200,
+                                borderRadius: 4,
+                                border: "1px solid #ccc",
+                              }}
                             />
                           ) : (
-                            <div style={{ color: "#999" }}>画像なし</div>
+                            <Typography variant="body2" color="text.disabled">
+                              画像なし
+                            </Typography>
                           )}
                         </>
                       }

@@ -1,12 +1,12 @@
 // src/components/Checker/CheckerMain.jsx
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Typography, Snackbar, Alert, CircularProgress, Box } from "@mui/material";
+import { Typography, Snackbar, Alert, CircularProgress } from "@mui/material";
 import CheckerFirstStep from "./CheckerFirstStep";
 import ChecklistSection from "./ChecklistSection";
 import TimeOverForm from "./TimeOverForm";
 import SendPage from "./SendPage";
-import { startReport, completeReport, fetchPublicTasks } from "../../api"; // ← API追加
+import { startReport, completeReport, fetchPublicTasks,uploadPhoto } from "../../api"; // ← API追加
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase"; // firebase.jsの場所
 import "./styles/CheckerMain.css";
@@ -99,19 +99,20 @@ const CheckerMain = () => {
     return await getDownloadURL(fileRef);
   };
 
-const handlePhotoUpload = async (index, event) => {
-  const file = event.target.files[0];
-  if (!file) return;
-  try {
-    // アップロード処理 → ダウンロードURL取得
-    const url = await uploadImageToFirebase(file, index);
-    setPhotos(prev => ({ ...prev, [index]: url }));
-    showSnackbar(`写真 ${index + 1} をアップロードしました`);
-  } catch (err) {
-    console.error("画像アップロード失敗", err);
-    showSnackbar(`写真 ${index + 1} のアップロードに失敗しました`, "error");
-  }
-};
+  const handlePhotoUpload = async (index, event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+  
+    try {
+      const url = await uploadPhoto(reportId, index, file);
+      setPhotos(prev => ({ ...prev, [index]: url }));
+      showSnackbar(`写真 ${index + 1} をアップロードしました`);
+    } catch (err) {
+      console.error("アップロード失敗", err);
+      showSnackbar(`写真 ${index + 1} のアップロードに失敗しました`, "error");
+    }
+  };
+  
 
   return (
     <div className="checker-container">
@@ -119,12 +120,12 @@ const handlePhotoUpload = async (index, event) => {
         <Typography variant="h4">清掃報告</Typography>
       </div>
 
+      {/* ✅ グローバルローディングオーバーレイ */}
       {loading && (
-        <Box display="flex" justifyContent="center" mt={3}>
-          <CircularProgress />
-        </Box>
+        <div className="loading-overlay">
+          <CircularProgress size={60} thickness={5} />
+        </div>
       )}
-
       {!timerStarted && !showSendPage && !loading ? (
         <CheckerFirstStep
           selectedPlace={selectedPlace}
