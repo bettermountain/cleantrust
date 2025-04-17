@@ -23,7 +23,7 @@ import CloseIcon from "@mui/icons-material/Close";
 const TaskItem = forwardRef(
   ({ task, index, onEdit, onDelete, editingIndex, setEditingIndex }, ref) => {
     const isEditing = editingIndex === index;
-    const limitTimeOptions = [1, 3, 5, 7, 10];
+    const limitTimeOptions = [0.5, 1, 2, 3, 4, 5];
 
     const [draftText, setDraftText] = useState(task.itemtext);
     const [draftLimitTime, setDraftLimitTime] = useState(task.limit_time);

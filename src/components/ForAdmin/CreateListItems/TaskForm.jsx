@@ -5,9 +5,9 @@ import SelectBox from "./SelectBox"; // 再利用
 
 const TaskForm = ({ onAdd }) => {
   const [inputText, setInputText] = useState("");
-  const [limitTime, setLimitTime] = useState(5); // 数値として管理
+  const [limitTime, setLimitTime] = useState(1); // 数値として管理
 
-  const limitTimeOptions = [1, 3, 5, 7, 10].map((min) => `${min}分`);
+  const limitTimeOptions = [0.5, 1, 2, 3, 4, 5].map((min) => `${min}分`);
 
   const handleSubmit = () => {
     const text = inputText.trim();

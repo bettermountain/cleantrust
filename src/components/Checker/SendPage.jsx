@@ -41,7 +41,7 @@ const SendPage = ({ reportId, onSubmit }) => {
             multiline
             rows={4}
             variant="outlined"
-            label="備考"
+            label="追加報告事項や写真不備の理由を記載"
             value={remarks}
             onChange={(e) => setRemarks(e.target.value)}
             className="send-textfield"
